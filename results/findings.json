@@ -1,0 +1,519 @@
+{
+  "slug": "sales-forecast-excel",
+  "generated_by": "analysis/run_analysis.py",
+  "headline": {
+    "number": "37.20",
+    "units": "%",
+    "sentence": "September, October and November alone bring in 37.2 percent of this wholesaler's revenue in the trailing twelve months (2010-12..2011-11) - half as much again as an evenly spread quarter would - and it is not a one-year artefact: the same three months were 36.1 percent of the year before (2009-12..2010-11). A one-line rule, 'this month equals the same month last year', predicts that peak quarter to within 5.9 percent."
+  },
+  "numbers": {
+    "peak_quarter_revenue_share_pct": "37.20",
+    "peak_quarter_window": "2010-12..2011-11",
+    "peak_quarter_revenue_share_prior_year_pct": "36.11",
+    "peak_quarter_window_prior_year": "2009-12..2010-11",
+    "peak_to_trough_ratio": "2.86",
+    "peak_month": "2011-11",
+    "trough_month": "2011-02",
+    "peak_month_revenue_gbp": "1451578.98",
+    "trough_month_revenue_gbp": "507799.87",
+    "total_revenue_gbp": "19028804.10",
+    "holdout_mape_regression_pct": "5.49",
+    "holdout_mape_seasonal_naive_pct": "5.93",
+    "holdout_mape_fourier_pct": "11.63",
+    "holdout_mape_naive_pct": "38.01",
+    "holdout_rmse_regression_gbp": "89466.25",
+    "holdout_rmse_seasonal_naive_gbp": "92849.91",
+    "holdout_r2_regression": "0.765",
+    "holdout_r2_seasonal_naive": "0.746",
+    "holdout_n_months": "3",
+    "forecast_accuracy_translation_pct": "94.51",
+    "rolling_mape_regression_pct": "6.83",
+    "rolling_mape_seasonal_naive_pct": "6.38",
+    "rolling_r2_regression": "0.911",
+    "rolling_r2_seasonal_naive": "0.918",
+    "rolling_forecast_points": "15",
+    "regression_beats_baseline_fixed_holdout": "True",
+    "regression_beats_baseline_rolling": "False",
+    "rows_raw": "1067371",
+    "rows_final": "978583",
+    "rows_dropped": "88788",
+    "rows_dropped_pct": "8.32",
+    "records_per_month_mean": "40774.3",
+    "cross_sheet_duplicate_rows": "22523",
+    "cross_sheet_duplicate_invoices": "1088",
+    "dec2010_revenue_deduped_gbp": "775638.36",
+    "dec2010_revenue_if_not_deduped_gbp": "1187158.33",
+    "dec2010_fake_yoy_growth_pct": "48.19",
+    "sep2011_vs_sep2010_growth_pct": "18.30",
+    "exact_duplicate_rows": "11814",
+    "credit_note_rows_dropped": "19104",
+    "complete_months": "24",
+    "distinct_countries": "43",
+    "distinct_products": "4893",
+    "derived_region_buckets": "4",
+    "top12_product_revenue_share_pct": "8.36",
+    "products_for_half_of_revenue": "290",
+    "uk_revenue_share_pct": "85.29",
+    "rest_of_europe_revenue_share_pct": "9.91",
+    "eire_revenue_share_pct": "3.24",
+    "rest_of_world_revenue_share_pct": "1.56",
+    "excel_data_sheet_rows": "845",
+    "excel_workbook_bytes": "62280",
+    "excel_workbook_sha256": "0dd9481f9ee111cd12a4cae110080370d6524cef13849b4e26852ffb0c37edd8",
+    "excel_verification_passed": "True"
+  },
+  "provenance": {
+    "dataset_name": "UCI Online Retail II",
+    "source_url": "https://archive.ics.uci.edu/static/public/502/online+retail+ii.zip",
+    "landing_page": "https://archive.ics.uci.edu/dataset/502/online+retail+ii",
+    "sha256": "572e36277c2390fbfde10664750731e0a86f55e33470d91919085f0408e67bfb",
+    "bytes": 45622418,
+    "rows_raw": 1067371,
+    "rows_final": 978583,
+    "rows_dropped": 88788,
+    "drop_ledger": [
+      {
+        "step": "cross_sheet_overlap",
+        "rows_dropped": 22523,
+        "rows_remaining": 1044848,
+        "why": "Sheets 'Year 2009-2010' and 'Year 2010-2011' both cover 2010-12-01 to 2010-12-09. Kept the sheet-1 copy, dropped the sheet-2 duplicate."
+      },
+      {
+        "step": "exact_duplicate_lines",
+        "rows_dropped": 11814,
+        "rows_remaining": 1033034,
+        "why": "Identical Invoice+StockCode+Quantity+Price+timestamp+Country rows. Same line recorded twice; keeping both would double-count revenue."
+      },
+      {
+        "step": "credit_notes",
+        "rows_dropped": 19104,
+        "rows_remaining": 1013930,
+        "why": "Invoice numbers starting with 'C' are cancellations/returns with negative quantities. Excluded so the series measures gross sales."
+      },
+      {
+        "step": "admin_stock_codes",
+        "rows_dropped": 4631,
+        "rows_remaining": 1009299,
+        "why": "Postage (POST/DOT), manual adjustments (M/ADJUST), bank charges, samples, Amazon fees, gift vouchers and TEST rows are not product sales."
+      },
+      {
+        "step": "nonpositive_quantity",
+        "rows_dropped": 3392,
+        "rows_remaining": 1005907,
+        "why": "Quantity <= 0 outside the credit-note set: write-offs and stock corrections, not sales."
+      },
+      {
+        "step": "nonpositive_price",
+        "rows_dropped": 2571,
+        "rows_remaining": 1003336,
+        "why": "Price <= 0 lines produce zero or negative revenue; they are freebies and entry errors, not sales."
+      },
+      {
+        "step": "truncated_final_month",
+        "rows_dropped": 24753,
+        "rows_remaining": 978583,
+        "why": "The file stops on 2011-12-09, so December 2011 is a part-month and would read as a 58% collapse in a monthly series."
+      }
+    ],
+    "kept_deliberately": [
+      "243,007 rows with a missing Customer ID - valid transactions, only customer-level work would need the ID.",
+      "4,382 rows with a missing Description - the StockCode still identifies the product."
+    ]
+  },
+  "raw_profile": {
+    "rows": 1067371,
+    "columns": [
+      "Invoice",
+      "StockCode",
+      "Description",
+      "Quantity",
+      "InvoiceDate",
+      "Price",
+      "Customer ID",
+      "Country",
+      "source_sheet"
+    ],
+    "sheets": [
+      "Year 2009-2010",
+      "Year 2010-2011"
+    ],
+    "date_min": "2009-12-01 07:45:00",
+    "date_max": "2011-12-09 12:50:00",
+    "null_description": 4382,
+    "null_customer_id": 243007,
+    "distinct_countries": 43,
+    "distinct_stockcodes": 5305,
+    "negative_quantity_rows": 22950,
+    "zero_quantity_rows": 0,
+    "nonpositive_price_rows": 6207,
+    "credit_note_rows": 19494,
+    "admin_code_rows": 5933,
+    "invoices_present_in_both_sheets": 1088,
+    "overlap_window_rows_sheet1": 22523,
+    "overlap_window_rows_sheet2": 22523
+  },
+  "monthly_revenue_gbp": {
+    "2009-12": 797901.16,
+    "2010-01": 612297.42,
+    "2010-02": 537909.67,
+    "2010-03": 761705.98,
+    "2010-04": 646340.93,
+    "2010-05": 643492.03,
+    "2010-06": 696583.19,
+    "2010-07": 632994.32,
+    "2010-08": 674037.72,
+    "2010-09": 869243.12,
+    "2010-10": 1094421.23,
+    "2010-11": 1429700.78,
+    "2010-12": 775638.36,
+    "2011-01": 670380.24,
+    "2011-02": 507799.87,
+    "2011-03": 689833.51,
+    "2011-04": 515377.99,
+    "2011-05": 739938.15,
+    "2011-06": 737558.98,
+    "2011-07": 688219.34,
+    "2011-08": 724216.5,
+    "2011-09": 1028320.38,
+    "2011-10": 1103314.25,
+    "2011-11": 1451578.98
+  },
+  "region_revenue_share_pct": {
+    "United Kingdom": 85.29,
+    "Ireland (EIRE)": 3.24,
+    "Rest of Europe": 9.91,
+    "Rest of World": 1.56
+  },
+  "top_products": [
+    {
+      "stock_code": "22423",
+      "name": "REGENCY CAKESTAND 3 TIER",
+      "revenue_gbp": 324596.2
+    },
+    {
+      "stock_code": "85123A",
+      "name": "WHITE HANGING HEART T-LIGHT HOLDER",
+      "revenue_gbp": 255498.3
+    },
+    {
+      "stock_code": "85099B",
+      "name": "JUMBO BAG RED RETROSPOT",
+      "revenue_gbp": 178342.44
+    },
+    {
+      "stock_code": "47566",
+      "name": "PARTY BUNTING",
+      "revenue_gbp": 147399.8
+    },
+    {
+      "stock_code": "84879",
+      "name": "ASSORTED COLOUR BIRD ORNAMENT",
+      "revenue_gbp": 127161.75
+    },
+    {
+      "stock_code": "22086",
+      "name": "PAPER CHAIN KIT 50'S CHRISTMAS",
+      "revenue_gbp": 110892.53
+    },
+    {
+      "stock_code": "23166",
+      "name": "MEDIUM CERAMIC TOP STORAGE JAR",
+      "revenue_gbp": 81448.21
+    },
+    {
+      "stock_code": "79321",
+      "name": "CHILLI LIGHTS",
+      "revenue_gbp": 77901.14
+    },
+    {
+      "stock_code": "22386",
+      "name": "JUMBO BAG PINK POLKADOT",
+      "revenue_gbp": 75398.3
+    },
+    {
+      "stock_code": "22197",
+      "name": "SMALL POPCORN HOLDER",
+      "revenue_gbp": 74096.4
+    },
+    {
+      "stock_code": "20725",
+      "name": "LUNCH BAG RED RETROSPOT",
+      "revenue_gbp": 70329.94
+    },
+    {
+      "stock_code": "84347",
+      "name": "ROTATING SILVER ANGELS T-LIGHT HLDR",
+      "revenue_gbp": 68604.72
+    }
+  ],
+  "forecast": {
+    "design": {
+      "series": "total monthly revenue, GBP",
+      "n_months": 24,
+      "train_months": [
+        "2009-12",
+        "2010-01",
+        "2010-02",
+        "2010-03",
+        "2010-04",
+        "2010-05",
+        "2010-06",
+        "2010-07",
+        "2010-08",
+        "2010-09",
+        "2010-10",
+        "2010-11",
+        "2010-12",
+        "2011-01",
+        "2011-02",
+        "2011-03",
+        "2011-04",
+        "2011-05",
+        "2011-06",
+        "2011-07",
+        "2011-08"
+      ],
+      "holdout_months": [
+        "2011-09",
+        "2011-10",
+        "2011-11"
+      ],
+      "primary_model": "OLS revenue ~ trend + month-of-year dummies",
+      "secondary_model": "OLS log(revenue) ~ trend + Fourier(2)",
+      "baselines": [
+        "naive",
+        "seasonal naive"
+      ],
+      "pre_declared": true
+    },
+    "fixed_holdout": {
+      "linreg_dummies": {
+        "label": "Linear regression (trend + month dummies)",
+        "mape_pct": 5.493000022176056,
+        "rmse": 89466.25175083987,
+        "r2": 0.7646283927523398,
+        "n": 3,
+        "pred": [
+          874320.96,
+          1099499.07,
+          1434778.62
+        ]
+      },
+      "loglin_fourier": {
+        "label": "Log-linear trend + Fourier(2)",
+        "mape_pct": 11.627361436816797,
+        "rmse": 189518.09744321048,
+        "r2": -0.05617762654274472,
+        "n": 3,
+        "pred": [
+          942201.0,
+          1158725.82,
+          1139706.67
+        ]
+      },
+      "seasonal_naive": {
+        "label": "Seasonal naive (same month last year)",
+        "mape_pct": 5.9276161397953295,
+        "rmse": 92849.90771682364,
+        "r2": 0.7464879889146753,
+        "n": 3,
+        "pred": [
+          869243.12,
+          1094421.23,
+          1429700.78
+        ]
+      },
+      "naive": {
+        "label": "Naive (last month carried forward)",
+        "mape_pct": 38.01371468165692,
+        "rmse": 505057.9013663903,
+        "r2": -6.5009786138415615,
+        "n": 3,
+        "pred": [
+          724216.5,
+          724216.5,
+          724216.5
+        ]
+      }
+    },
+    "holdout_actual_gbp": [
+      1028320.38,
+      1103314.25,
+      1451578.98
+    ],
+    "rolling_origin": {
+      "n_origins": 6,
+      "horizon": 3,
+      "min_train_months": 18,
+      "models": {
+        "linreg_dummies": {
+          "label": "Linear regression (trend + month dummies)",
+          "mape_pct": 6.8259443351027445,
+          "rmse": 82020.11644446536,
+          "r2": 0.9112938044054328,
+          "n": 15
+        },
+        "loglin_fourier": {
+          "label": "Log-linear trend + Fourier(2)",
+          "mape_pct": 10.067142486602245,
+          "rmse": 151358.71498703564,
+          "r2": 0.6979157695147352,
+          "n": 15
+        },
+        "seasonal_naive": {
+          "label": "Seasonal naive (same month last year)",
+          "mape_pct": 6.382593676244549,
+          "rmse": 78707.17849014541,
+          "r2": 0.9183150817553767,
+          "n": 15
+        },
+        "naive": {
+          "label": "Naive (last month carried forward)",
+          "mape_pct": 19.79670560134365,
+          "rmse": 310983.5229537303,
+          "r2": -0.2752283202173076,
+          "n": 15
+        }
+      }
+    },
+    "verdict": "On the fixed 3-month holdout the regression edges the seasonal-naive baseline (5.49% vs 5.93% MAPE), but that is a 3-point comparison. On the 15-point rolling-origin backtest the baseline wins (6.38% vs 6.83%). The honest reading is that the regression does not reliably beat 'same month last year' on this series."
+  },
+  "claim_check": [
+    {
+      "resume_claim": "15K+ monthly sales records",
+      "verdict": "supported",
+      "real_value": "40,774 clean records per month (978,583 over 24 months)",
+      "note": "Comfortably clears 15K. The claim understates the dataset by roughly 2.7x, which is the good kind of error."
+    },
+    {
+      "resume_claim": "across 4 regions",
+      "verdict": "contradicted",
+      "real_value": "43 countries, no region column",
+      "note": "The file has a single free-text Country field. The four geography buckets on the dashboard (UK / Ireland / Rest of Europe / Rest of World) are defined in pipeline.py by us, not read from the data. The bullet should say so."
+    },
+    {
+      "resume_claim": "and 12 products",
+      "verdict": "contradicted",
+      "real_value": "4,893 distinct stock codes; the top 12 are only 8.36% of revenue",
+      "note": "The dashboard does show 12 products, but they are the twelve largest of nearly five thousand and they account for under a tenth of turnover. Describing the catalogue as 12 products is wrong by two orders of magnitude."
+    },
+    {
+      "resume_claim": "Used pivot tables, VLOOKUP, conditional formatting and charts",
+      "verdict": "partially_supported",
+      "real_value": "VLOOKUP, conditional formatting and native charts are in the workbook. There are no PivotTables.",
+      "note": "openpyxl cannot emit a pivotCache/pivotTable part, so the pivot logic is done with SUMIFS over a tidy fact table - same cross-tab, recalculates live, no manual refresh. Claiming PivotTables would be false and is not claimed."
+    },
+    {
+      "resume_claim": "linear regression to forecast next-quarter sales with 93% accuracy",
+      "verdict": "partially_supported",
+      "real_value": "MAPE 5.49% on the held-out quarter (= 94.51% 'accuracy'), RMSE GBP 89,466, R2 0.765 on n=3 months",
+      "note": "'93% accuracy' is not a defined regression metric. Translated to MAPE, the number is roughly right - forecasts landed within about 5% of actual on the held-out quarter. But the claim is hollow without a baseline: a one-line seasonal-naive rule scores 5.93%, and on a 15-point rolling-origin backtest the baseline actually wins (6.38% vs 6.83%). The regression does not reliably beat 'same month last year'."
+    },
+    {
+      "resume_claim": "reducing inventory gaps by 18%",
+      "verdict": "unverifiable",
+      "real_value": "no inventory, stock-out or fulfilment field exists in this dataset",
+      "note": "A downstream business outcome that no public transaction file can evidence. Kept off the site. The defensible inventory-relevant fact is the seasonality: 37.2% of the trailing twelve months' revenue lands in September-November."
+    }
+  ],
+  "excel": {
+    "path": "excel/sales_dashboard_forecast.xlsx",
+    "bytes": 62280,
+    "verification": {
+      "zip_crc_valid": {
+        "pass": true,
+        "detail": "all members OK"
+      },
+      "required_parts_present": {
+        "pass": true,
+        "detail": "missing: "
+      },
+      "all_xml_well_formed": {
+        "pass": true,
+        "detail": ""
+      },
+      "no_dangling_relationships": {
+        "pass": true,
+        "detail": ""
+      },
+      "worksheets_declared": {
+        "pass": true,
+        "detail": "5 worksheet parts"
+      },
+      "reload_sheetnames": {
+        "pass": true,
+        "detail": "['Notes', 'Data', 'Lookups', 'Dashboard', 'Forecast']"
+      },
+      "full_recalc_on_load": {
+        "pass": true,
+        "detail": "workbook forces recalculation when opened"
+      },
+      "dashboard_has_sumifs": {
+        "pass": true,
+        "detail": "147 SUMIFS formulas"
+      },
+      "dashboard_has_vlookup": {
+        "pass": true,
+        "detail": "12 VLOOKUP formulas"
+      },
+      "dashboard_no_xlookup": {
+        "pass": true,
+        "detail": "XLOOKUP needs an _xlfn prefix through openpyxl and would render #NAME?"
+      },
+      "dashboard_conditional_formatting": {
+        "pass": true,
+        "detail": "4 conditional formatting ranges"
+      },
+      "dashboard_charts": {
+        "pass": true,
+        "detail": "2 charts"
+      },
+      "forecast_fits_with_linest": {
+        "pass": true,
+        "detail": "14 LINEST formulas"
+      },
+      "forecast_predicts_with_trend": {
+        "pass": true,
+        "detail": "24 TREND formulas (prediction does not depend on LINEST coefficient ordering)"
+      },
+      "forecast_charts": {
+        "pass": true,
+        "detail": "1 charts"
+      },
+      "forecast_holdout_not_in_training": {
+        "pass": true,
+        "detail": "every TREND known_y stops at row 26, so the held-out months never enter the fit"
+      },
+      "workbook_design_matrix_reproduces_python": {
+        "pass": true,
+        "detail": "max abs difference GBP 0.000000 between the sheet's own design matrix refitted and the published forecast"
+      },
+      "data_is_values_not_formulas": {
+        "pass": true,
+        "detail": "source facts are literal values, as they should be"
+      },
+      "data_table_defined": {
+        "pass": true,
+        "detail": "['FactSales']"
+      }
+    },
+    "verified_ok": true,
+    "pivottables": "none - openpyxl cannot write a pivotCache part; SUMIFS over a tidy fact table is used instead"
+  },
+  "charts": [
+    "charts/monthly-revenue.svg",
+    "charts/month-of-year.svg",
+    "charts/forecast-holdout.svg",
+    "charts/model-mape.svg",
+    "charts/revenue-by-region.svg",
+    "charts/product-pareto.svg"
+  ],
+  "caveats": [
+    "24 complete months is the bare minimum for a seasonal forecast: each calendar month is observed exactly twice, so every seasonal coefficient rests on two data points.",
+    "The two source worksheets overlap for 2010-12-01 to 2010-12-09. Analyses that concatenate them without deduplicating double-count 22,523 rows and report a false December 2010 spike.",
+    "December 2011 is truncated on the 9th and is excluded; the series ends 2011-11.",
+    "'Region' is not in the data. The four geography buckets are ours, built from the 43-value free-text Country column.",
+    "This is one UK online gift wholesaler in 2009-2011. Nothing here generalises to other retailers or to today.",
+    "No LibreOffice or Excel is installed on the build machine, so the workbook is verified structurally (zip CRC, XML well-formedness, relationship resolution, openpyxl reload) rather than by opening it."
+  ]
+}

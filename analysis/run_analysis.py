@@ -252,11 +252,9 @@ def main() -> int:
                 "September, October and November alone bring in "
                 f"{peak_q_share:.1f} percent of this wholesaler's revenue in the "
                 f"trailing twelve months ({peak_q_window}) - half as much again as an "
-                f"evenly spread quarter would - and it is not a one-year artefact: the "
+                "evenly spread quarter would - and it is not a one-year artefact: the "
                 f"same three months were {peak_q_share_prior:.1f} percent of the year "
-                f"before ({peak_q_window_prior}). A one-line rule, 'this month equals "
-                "the same month last year', predicts that peak quarter to within "
-                f"{sn['mape_pct']:.1f} percent."),
+                f"before ({peak_q_window_prior})."),
         },
         "numbers": {k: v for k, v in HEADLINES},
         "provenance": {
@@ -332,6 +330,13 @@ def main() -> int:
             "from the 43-value free-text Country column.",
             "This is one UK online gift wholesaler in 2009-2011. Nothing here "
             "generalises to other retailers or to today.",
+            "The workbook's Data sheet holds the 845-row month x region x product "
+            "aggregate, not the 978,583 cleaned line items. The line level would make "
+            "the download several hundred megabytes and every SUMIFS crawl; it stays "
+            "in the Python pipeline.",
+            "The workbook contains no PivotTables. openpyxl cannot write a pivotCache "
+            "part, so the pivot logic is SUMIFS over a tidy fact table - same "
+            "cross-tab, recalculates live, but no drag-and-drop re-pivoting.",
             "No LibreOffice or Excel is installed on the build machine, so the "
             "workbook is verified structurally (zip CRC, XML well-formedness, "
             "relationship resolution, openpyxl reload) rather than by opening it.",

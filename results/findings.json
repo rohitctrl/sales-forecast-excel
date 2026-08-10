@@ -4,7 +4,7 @@
   "headline": {
     "number": "37.20",
     "units": "%",
-    "sentence": "September, October and November alone bring in 37.2 percent of this wholesaler's revenue in the trailing twelve months (2010-12..2011-11) - half as much again as an evenly spread quarter would - and it is not a one-year artefact: the same three months were 36.1 percent of the year before (2009-12..2010-11). A one-line rule, 'this month equals the same month last year', predicts that peak quarter to within 5.9 percent."
+    "sentence": "September, October and November alone bring in 37.2 percent of this wholesaler's revenue in the trailing twelve months (2010-12..2011-11) - half as much again as an evenly spread quarter would - and it is not a one-year artefact: the same three months were 36.1 percent of the year before (2009-12..2010-11)."
   },
   "numbers": {
     "peak_quarter_revenue_share_pct": "37.20",
@@ -514,6 +514,8 @@
     "December 2011 is truncated on the 9th and is excluded; the series ends 2011-11.",
     "'Region' is not in the data. The four geography buckets are ours, built from the 43-value free-text Country column.",
     "This is one UK online gift wholesaler in 2009-2011. Nothing here generalises to other retailers or to today.",
+    "The workbook's Data sheet holds the 845-row month x region x product aggregate, not the 978,583 cleaned line items. The line level would make the download several hundred megabytes and every SUMIFS crawl; it stays in the Python pipeline.",
+    "The workbook contains no PivotTables. openpyxl cannot write a pivotCache part, so the pivot logic is SUMIFS over a tidy fact table - same cross-tab, recalculates live, but no drag-and-drop re-pivoting.",
     "No LibreOffice or Excel is installed on the build machine, so the workbook is verified structurally (zip CRC, XML well-formedness, relationship resolution, openpyxl reload) rather than by opening it."
   ]
 }

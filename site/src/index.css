@@ -14,6 +14,9 @@
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
+    /* The navigation is fixed and roughly 104px tall, so anchor targets must
+       stop clear of it rather than under it. */
+    scroll-padding-top: 7.5rem;
   }
 
   body {

@@ -19,7 +19,7 @@ function Ledger() {
               onFocus={() => setOpen(i)}
               onClick={() => setOpen(i)}
               aria-expanded={active}
-              className={`group relative flex min-w-0 flex-col justify-between overflow-hidden bg-pitch p-6 text-left transition-[flex-grow] duration-700 ease-out ${
+              className={`group relative flex min-w-0 cursor-pointer flex-col justify-between overflow-hidden bg-pitch p-6 text-left transition-[flex-grow] duration-700 ease-out ${
                 active ? 'flex-[3.4]' : 'flex-[1]'
               }`}
             >

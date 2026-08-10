@@ -1,0 +1,92 @@
+@import '@fontsource-variable/geist/index.css';
+@import '@fontsource/geist-mono/400.css';
+@import '@fontsource/geist-mono/500.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-void text-bone font-sans antialiased;
+    /* Ambient ground that exists with or without any remote image. */
+    background-image:
+      radial-gradient(120rem 70rem at 12% -10%, rgba(31, 44, 209, 0.22), transparent 60%),
+      radial-gradient(80rem 50rem at 92% 8%, rgba(185, 182, 172, 0.09), transparent 62%),
+      radial-gradient(90rem 60rem at 50% 118%, rgba(31, 44, 209, 0.14), transparent 65%);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    @apply bg-lift text-ink;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid #8189ff;
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@layer components {
+  /* Charts are dark ink on transparent, so they must sit on a light plate. */
+  .plate {
+    @apply relative rounded-[3px] bg-bone;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.55) inset,
+      0 30px 70px -30px rgba(0, 0, 0, 0.85);
+  }
+
+  .hairline {
+    @apply border-white/10;
+  }
+
+  .cell {
+    @apply relative bg-pitch p-7 md:p-9;
+  }
+
+  .figure {
+    @apply font-mono tabular-nums tracking-tightest;
+  }
+
+  .rule-label {
+    @apply font-mono text-[0.6875rem] uppercase tracking-[0.22em] text-sand/60;
+  }
+}
+
+@layer utilities {
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.4;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+}

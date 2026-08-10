@@ -26,6 +26,10 @@ plt.rcParams.update({
     "xtick.major.width": 0.7,
     "ytick.major.width": 0.7,
     "svg.fonttype": "none",
+    # Fixed hash salt so matplotlib's internal clip-path ids are stable across runs.
+    # Without it every re-run rewrites all six SVGs with new random ids and the git
+    # working tree comes out dirty for no substantive reason.
+    "svg.hashsalt": "sales-forecast-excel",
 })
 
 MONTH_ABBR = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -36,7 +40,9 @@ def _finish(fig, ax, path):
     for side in ("top", "right"):
         ax.spines[side].set_visible(False)
     fig.tight_layout(pad=0.3)
-    fig.savefig(path, transparent=True, format="svg")
+    # metadata Date=None suppresses the embedded creation timestamp, so the SVG is
+    # byte-reproducible: re-running the pipeline should not change the file.
+    fig.savefig(path, transparent=True, format="svg", metadata={"Date": None})
     plt.close(fig)
 
 
@@ -144,7 +150,7 @@ def chart_model_mape(holdout, rolling, out_dir) -> str:
     for side in ("top", "right"):
         ax.spines[side].set_visible(False)
     fig.savefig(path, transparent=True, format="svg", bbox_inches="tight",
-                pad_inches=0.04)
+                pad_inches=0.04, metadata={"Date": None})
     plt.close(fig)
     return path
 

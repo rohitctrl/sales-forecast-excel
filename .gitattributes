@@ -1,0 +1,3 @@
+# The site/ directory is the written-up presentation of the analysis, not the analysis.
+# Excluding it keeps the repo language stats pointing at the actual work.
+site/** linguist-documentation=true
